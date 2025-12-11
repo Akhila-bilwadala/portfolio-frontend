@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akhila | Full Stack Developer</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for Social Icons (optional, using unicode for now to keep it lightweight or can link CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar">
+      <a href="#" class="logo">&lt;/<span>dev</span>&gt;</a>
+      <div class="menu-icon">☰</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-container hidden-section">
+      <div class="hero-text">
+        <p class="subtitle">Hello, I'm Akhila Bilwadala S</p>
+        <h1>Aspiring <span class="gradient-text">Full Stack</span><br> Developer</h1>
+        <p class="subtitle" style="margin-top: 10px;">
+          Crafting visually stunning & functional web experiences associated with modern design patterns.
+        </p>
+        <div class="btn-group">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#contact" class="btn btn-secondary">Contact Me</a>
+        </div>
+      </div>
+      <!-- Optional: Could add a 3D spline or image here later -->
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="hidden-section">
+    <h2>About <span>Me</span></h2>
+    <div class="about-card">
+      <div style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">
+        <p>
+          I am an aspiring full-stack developer with a strong foundation in modern web technologies and a commitment to
+          continuous learning. As a fresher, I bring enthusiasm, adaptability, and a detail-oriented approach to every
+          project I work on. I aim to create clean, efficient, and intuitive digital solutions while steadily expanding
+          my technical expertise through hands-on development. I am motivated to contribute to meaningful projects and
+          grow within a professional environment
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS SECTION -->
+  <section id="skills" class="hidden-section">
+    <h2>My <span>Tech Stack</span></h2>
+    <div class="skills-grid" id="skills-container">
+      <p style="text-align:center; width:100%;">Loading skills...</p>
+    </div>
+  </section>
+
+  <!-- PROJECTS SECTION -->
+  <section id="projects">
+    <h2 class="hidden-section">Unique <span>Projects</span></h2>
+    <div class="projects-grid" id="projects-container">
+      <p style="text-align:center; width:100%;">Loading projects...</p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <div style="text-align: center; margin-bottom: 40px;" class="hidden-section">
+      <h2>Let's Work <span>Together</span></h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll get back
+        to you!
+      </p>
+    </div>
+
+    <div class="contact-wrapper">
+
+      <!-- Left: Info -->
+      <div class="contact-info slide-in-left">
+
+        <div class="info-item">
+          <div class="icon-box"><i class="fas fa-envelope"></i></div>
+          <div class="info-content">
+            <h4>Email</h4>
+            <p>akhilabilwadala.s@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="info-content">
+            <h4>Location</h4>
+            <p>Kerala, India</p>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Right: Form -->
+      <div class="contact-form-container slide-in-right">
+        <form id="contact-form">
+          <div class="input-group">
+            <div class="input-box">
+              <label>Name</label>
+              <input type="text" placeholder="Your name" required>
+            </div>
+            <div class="input-box">
+              <label>Email</label>
+              <input type="email" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="input-box">
+            <label>Message</label>
+            <textarea rows="5" placeholder="Your message..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" style="width: 100%;">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Akhila. Built with pure code & passion.</p>
+    <div style="margin-top: 10px; font-size: 1.2rem;">
+      <a href="https://github.com/Akhila-bilwadala" style="color: var(--text-muted); margin: 0 10px;"><i
+          class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/akhila-bilwadala-s-06646527a"
+        style="color: var(--text-muted); margin: 0 10px;"><i class="fab fa-linkedin"></i></a>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
