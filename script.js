@@ -68,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     // --- FETCH DATA FROM API ---
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://my-portfolio-backend.onrender.com/api';
+
 
     async function loadSkills() {
         try {
