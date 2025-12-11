@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         : 'https://portfolio-backend-z2kz.onrender.com/api';
 
 
-
     async function loadSkills() {
         try {
             const res = await fetch(`${API_URL}/skills`);
