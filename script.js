@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     // --- FETCH DATA FROM API ---
-    const API_URL = 'https://my-portfolio-backend.onrender.com/api';
+    const API_URL = 'https://portfolio-backend-z2kz.onrender.com';
 
 
     async function loadSkills() {
