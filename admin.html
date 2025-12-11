@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --sidebar-bg: #111;
+            --card-bg: #1a1a1a;
+            --text-color: #e0e0e0;
+            --primary-color: #00f2fe;
+            --accent-color: #4facfe;
+            --danger-color: #ff4757;
+            --success-color: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            padding: 30px 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            background: linear-gradient(90deg, rgba(79, 172, 254, 0.1) 0%, transparent 100%);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .logout-btn {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            color: var(--danger-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards & Forms */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: #000;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffa502;
+            color: black;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Items List */
+        .item-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .list-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item-content {
+            flex-grow: 1;
+        }
+
+        .list-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">&lt;/<span></span>&gt; Admin</div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-home"></i> Home
+            </li>
+            <li class="nav-item" onclick="showSection('skills')">
+                <i class="fas fa-code"></i> Skills
+            </li>
+            <li class="nav-item" onclick="showSection('projects')">
+                <i class="fas fa-folder"></i> Projects
+            </li>
+            <li class="nav-item" onclick="showSection('messages')">
+                <i class="fas fa-envelope"></i> Messages
+            </li>
+        </ul>
+        <div class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="content-section active">
+            <div class="header">
+                <h1>Dashboard Overview</h1>
+            </div>
+            <div class="card">
+                <p>Welcome back, Admin! Select a section from the sidebar to manage your content.</p>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills" class="content-section">
+            <div class="header">
+                <h1>Manage Skills</h1>
+            </div>
+            <div class="card">
+                <form id="skill-form" class="form-grid" style="grid-template-columns: 1fr auto;">
+                    <input type="hidden" id="skill-id">
+                    <input type="text" id="skill-name" placeholder="New Skill (e.g. Node.js)" required>
+                    <button type="submit" class="btn btn-primary" id="skill-submit-btn">Add Skill</button>
+                    <button type="button" class="btn btn-warning" id="skill-cancel-btn"
+                        style="display:none;">Cancel</button>
+                </form>
+            </div>
+            <div class="item-list" id="admin-skills-list"></div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="content-section">
+            <div class="header">
+                <h1>Manage Projects</h1>
+            </div>
+            <div class="card">
+                <form id="project-form" class="form-grid">
+                    <input type="hidden" id="project-id">
+
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" id="project-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="project-desc" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Technologies (comma separated)</label>
+                        <input type="text" id="project-tech" placeholder="React, Node, MongoDB">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Github URL</label>
+                            <input type="url" id="project-github">
+                        </div>
+                        <div class="form-group">
+                            <label>Demo URL</label>
+                            <input type="url" id="project-demo">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary" id="project-submit-btn">Add Project</button>
+                        <button type="button" class="btn btn-warning" id="project-cancel-btn"
+                            style="display:none;">Cancel Edit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="item-list" id="admin-projects-list"></div>
+        </section>
+
+        <!-- MESSAGES SECTION -->
+        <section id="messages" class="content-section">
+            <div class="header">
+                <h1>Inbox</h1>
+                <button class="btn btn-primary" onclick="loadMessages()"><i class="fas fa-sync"></i> Refresh</button>
+            </div>
+            <div id="admin-messages-list"></div>
+        </section>
+
+    </main>
+
+    <script src="admin.js"></script>
+    <script>
+        // Simple internal tab switching logic
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            // Remove active class from nav items
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Highlight nav item (this is a bit hacky, normally done via identifying the clicked element)
+            // But since we have onclick inline, we can't easily reference 'this' nicely without passing it.
+            // Let's just find the nav item that calls this function with this ID.
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.getAttribute('onclick').includes(sectionId)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

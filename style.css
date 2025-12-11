@@ -1,6 +1,46 @@
 /* FONT + RESET */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
+/* --- TOAST NOTIFICATION --- */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(140, 57, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--primary);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 2000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast.success {
+    border-color: #2ed573;
+    background: rgba(46, 213, 115, 0.2);
+}
+
+.toast.error {
+    border-color: #ff4757;
+    background: rgba(255, 71, 87, 0.2);
+}
+
+.toast i {
+    font-size: 1.2rem;
+}
+
 :root {
     --bg-dark: #0a0a0a;
     --text-main: #ffffff;

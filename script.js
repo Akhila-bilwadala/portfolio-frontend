@@ -68,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     // --- FETCH DATA FROM API ---
-  const API_URL = 'https://portfolio-backend-z2kz.onrender.com/api';
+    const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3000/api'
+        : 'https://portfolio-backend-z2kz.onrender.com/api';
 
 
 
@@ -156,14 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (res.ok) {
-                    alert('Message sent successfully!');
+                    showToast('Message sent successfully!', 'success');
                     contactForm.reset();
                 } else {
-                    alert('Failed to send message.');
+                    showToast('Failed to send message.', 'error');
                 }
             } catch (error) {
                 console.error('Error sending message:', error);
-                alert('Error sending message.');
+                showToast('Error sending message.', 'error');
             } finally {
                 btn.textContent = originalText;
                 btn.disabled = false;
@@ -171,3 +173,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// --- TOAST NOTIFICATION HELPER ---
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Trigger animation
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 400);
+    }, 3000);
+}
+
