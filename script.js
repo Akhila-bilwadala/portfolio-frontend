@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     // --- FETCH DATA FROM API ---
-    const API_URL = 'http://localhost:3000/api';
+    const API_BASE = "https://portfolio-backend-z2kz.onrender.com";
 
     async function loadSkills() {
         try {
