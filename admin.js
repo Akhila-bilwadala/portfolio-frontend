@@ -1,6 +1,6 @@
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000/api'
-    : 'https://portfolio-backend-z2kz.onrender.com/api';
+const API_URL = 'https://portfolio-backend-z2kz.onrender.com/api';
+
+console.log('Admin Script Loaded. API URL:', API_URL);
 
 // --- AUTH CHECK ---
 const token = localStorage.getItem('token');
@@ -55,14 +55,11 @@ async function loadMessages() {
     if (!messagesList) return;
     messagesList.innerHTML = '<p>Loading...</p>';
     try {
-        const res = await fetch(`${API_URL}/messages`); // Public read is likely fine or should be protected? Usually admin only. 
-        // NOTE: If messages route is protected, add headers. Assuming open for now as per previous code, 
-        // but robust implementation would protect it. For now, let's just fetch.
-        // Actually, let's keep it simple. If it fails, we know why.
+        const res = await fetch(`${API_URL}/messages`);
         const messages = await res.json();
 
         if (messages.length === 0) {
-            messagesList.innerHTML = '<p style="color:#888;">No messages found.</p>';
+            messagesList.innerHTML = '<p style="color:var(--text-muted);">No messages found from visitors.</p>';
             return;
         }
 
@@ -70,19 +67,19 @@ async function loadMessages() {
             <div class="message-card">
                 <div class="message-header">
                     <div>
-                        <strong style="color:var(--primary-color)">${msg.name}</strong> 
-                        <span style="color:#888; font-size:0.9rem;">&lt;${msg.email}&gt;</span>
+                        <strong style="color:var(--primary); font-size: 1.1rem;">${msg.name}</strong> 
+                        <span style="color:var(--text-muted); font-size:0.9rem; margin-left: 8px;">&lt;${msg.email}&gt;</span>
                     </div>
-                    <small style="color:#888;">${new Date(msg.createdAt).toLocaleString()}</small>
+                    <small style="color:var(--text-muted);">${new Date(msg.createdAt).toLocaleString()}</small>
                 </div>
-                <div style="color: #ddd; margin-bottom: 15px;">
+                <div style="color: var(--text-main); margin-bottom: 20px; line-height: 1.6;">
                     ${msg.message}
                 </div>
-                <div style="text-align: right;">
+                <div style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
                     <button class="btn btn-danger" onclick="deleteMessage('${msg._id}')">
                         <i class="fas fa-trash"></i> Delete
                     </button>
-                    <a href="mailto:${msg.email}" class="btn btn-primary" style="text-decoration:none;">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}" target="_blank" class="btn btn-primary" style="text-decoration:none;">
                         <i class="fas fa-reply"></i> Reply
                     </a>
                 </div>
@@ -97,8 +94,6 @@ async function loadMessages() {
 window.deleteMessage = async (id) => {
     if (!confirm('Are you sure you want to delete this message?')) return;
     try {
-        // Did not protect delete message yet in this plan, assuming open or need to protect.
-        // Let's pass headers anyway.
         await fetch(`${API_URL}/messages/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders()
@@ -151,18 +146,23 @@ skillForm.addEventListener('submit', async (e) => {
     const url = id ? `${API_URL}/skills/${id}` : `${API_URL}/skills`;
 
     try {
+        console.log(`Sending ${method} request to ${url} with token: ...${token.substring(token.length - 10)}`);
         const res = await fetch(url, {
             method,
             headers: getAuthHeaders(),
             body: JSON.stringify({ skill: name })
         });
 
-        if (!res.ok) throw new Error("Failed");
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.message || res.statusText);
+        }
 
         resetSkillForm();
         loadSkills();
     } catch (err) {
-        alert('Error saving skill. Ensure you are logged in.');
+        console.error("Skill Error:", err);
+        alert(`Error saving skill: ${err.message}. Ensure you are logged in.`);
     }
 });
 

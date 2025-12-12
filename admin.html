@@ -4,370 +4,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Admin Dashboard</title>
+    <title>Admin Dashboard - Portfolio</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --sidebar-bg: #111;
-            --card-bg: #1a1a1a;
-            --text-color: #e0e0e0;
-            --primary-color: #00f2fe;
-            --accent-color: #4facfe;
-            --danger-color: #ff4757;
-            --success-color: #2ed573;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
+        /* Admin specific overrides */
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: var(--sidebar-bg);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo {
-            padding: 30px 20px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo span {
-            color: var(--primary-color);
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 20px 0;
-            flex-grow: 1;
-        }
-
-        .nav-item {
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #888;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-item.active,
-        .nav-item:hover {
-            background: linear-gradient(90deg, rgba(79, 172, 254, 0.1) 0%, transparent 100%);
-            color: var(--primary-color);
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .logout-btn {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            color: var(--danger-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
+            display: block;
+            /* Override flex from style.css likely/or default */
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
             overflow-y: auto;
+            position: relative;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+        /* Nav specific adjustment */
+        .admin-nav-item {
+            cursor: pointer;
         }
 
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 600;
+        .main-content {
+            padding: 120px 20px 50px;
+            /* Top padding for fixed header */
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
         }
 
-        /* Sections */
         .content-section {
             display: none;
-            animation: fadeIn 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .content-section.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Card Styles */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
         }
 
-        /* Cards & Forms */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .header-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--text-main);
         }
 
+        .header-title span {
+            color: var(--primary);
+        }
+
+        /* Forms */
         .form-grid {
             display: grid;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
         }
 
-        .form-group label {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
             display: block;
             margin-bottom: 8px;
+            color: var(--text-muted);
             font-size: 0.9rem;
-            color: #aaa;
         }
 
         input,
         textarea {
             width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
             font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: 'Outfit', sans-serif;
         }
 
         input:focus,
         textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
         }
 
+        /* Buttons */
         .btn {
-            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
             border: none;
-            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
-            transition: opacity 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .btn-primary {
-            background: var(--primary-color);
-            color: #000;
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(140, 57, 255, 0.3);
         }
 
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(140, 57, 255, 0.5);
         }
 
         .btn-warning {
-            background: #ffa502;
-            color: black;
+            background: rgba(255, 165, 2, 0.15);
+            color: #ffa502;
+            border: 1px solid rgba(255, 165, 2, 0.3);
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        .btn-warning:hover {
+            background: rgba(255, 165, 2, 0.25);
         }
 
-        /* Items List */
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.15);
+            color: #ff4757;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.25);
+        }
+
+        /* Lists */
         .item-list {
             display: grid;
             gap: 15px;
-            margin-top: 20px;
         }
 
         .list-item {
             background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.3s;
         }
 
-        .list-item-content {
-            flex-grow: 1;
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .list-actions {
-            display: flex;
-            gap: 10px;
+        .list-item h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
         }
 
+        /* Messages */
         .message-card {
             background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 16px;
             margin-bottom: 15px;
         }
 
         .message-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .list-actions {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .main-content {
+                padding-top: 100px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">&lt;/<span></span>&gt; Admin</div>
-        <ul class="nav-menu">
-            <li class="nav-item active" onclick="showSection('dashboard')">
-                <i class="fas fa-home"></i> Home
-            </li>
-            <li class="nav-item" onclick="showSection('skills')">
-                <i class="fas fa-code"></i> Skills
-            </li>
-            <li class="nav-item" onclick="showSection('projects')">
-                <i class="fas fa-folder"></i> Projects
-            </li>
-            <li class="nav-item" onclick="showSection('messages')">
-                <i class="fas fa-envelope"></i> Messages
-            </li>
-        </ul>
-        <div class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </div>
-    </aside>
+    <!-- Glassy Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo" onclick="showSection('dashboard'); return false;">
+                &lt;/<span>Admin</span>&gt;
+            </a>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#" class="admin-nav-item active" onclick="showSection('dashboard'); return false;">Home</a>
+                </li>
+                <li><a href="#" class="admin-nav-item" onclick="showSection('skills'); return false;">Skills</a></li>
+                <li><a href="#" class="admin-nav-item" onclick="showSection('projects'); return false;">Projects</a>
+                </li>
+                <li><a href="#" class="admin-nav-item" onclick="showSection('messages'); return false;">Messages</a>
+                </li>
+                <li><a href="#" class="admin-nav-item" onclick="logout(); return false;"
+                        style="color: #ff4757;">Logout</a></li>
+            </ul>
+
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
 
     <!-- Main Content -->
     <main class="main-content">
 
         <!-- DASHBOARD SECTION -->
+        <style>
+            .dashboard-card-link {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                cursor: pointer;
+            }
+
+            .dashboard-card-link:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+        </style>
         <section id="dashboard" class="content-section active">
-            <div class="header">
-                <h1>Dashboard Overview</h1>
-            </div>
-            <div class="card">
-                <p>Welcome back, Admin! Select a section from the sidebar to manage your content.</p>
+            <h1 class="header-title">Dashboard <span>Overview</span></h1>
+            <div class="glass-card">
+                <p style="color: var(--text-muted); font-size: 1.1rem;">
+                    Welcome back, Admin! Use the navigation menu to manage your portfolio content.
+                </p>
+                <div
+                    style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="dashboard-card-link" onclick="showSection('skills')"
+                        style="background: rgba(140, 57, 255, 0.1); padding: 20px; border-radius: 16px; text-align: center;">
+                        <i class="fas fa-code" style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"></i>
+                        <h3 style="margin-bottom: 5px;">Skills</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Manage technical skills</p>
+                    </div>
+                    <div class="dashboard-card-link" onclick="showSection('projects')"
+                        style="background: rgba(0, 242, 254, 0.1); padding: 20px; border-radius: 16px; text-align: center;">
+                        <i class="fas fa-folder" style="font-size: 2rem; color: #00f2fe; margin-bottom: 10px;"></i>
+                        <h3 style="margin-bottom: 5px;">Projects</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Update portfolio projects</p>
+                    </div>
+                    <div class="dashboard-card-link" onclick="showSection('messages')"
+                        style="background: rgba(46, 213, 115, 0.1); padding: 20px; border-radius: 16px; text-align: center;">
+                        <i class="fas fa-envelope" style="font-size: 2rem; color: #2ed573; margin-bottom: 10px;"></i>
+                        <h3 style="margin-bottom: 5px;">Messages</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">Read & reply to inquiries</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- SKILLS SECTION -->
         <section id="skills" class="content-section">
-            <div class="header">
-                <h1>Manage Skills</h1>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                <button onclick="showSection('dashboard')" class="btn"
+                    style="background: rgba(255,255,255,0.1); color: var(--text-main); padding: 10px 15px; border-radius: 50%;">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="header-title" style="margin-bottom: 0;">Manage <span>Skills</span></h1>
             </div>
-            <div class="card">
-                <form id="skill-form" class="form-grid" style="grid-template-columns: 1fr auto;">
+
+            <div class="glass-card">
+                <form id="skill-form">
                     <input type="hidden" id="skill-id">
-                    <input type="text" id="skill-name" placeholder="New Skill (e.g. Node.js)" required>
-                    <button type="submit" class="btn btn-primary" id="skill-submit-btn">Add Skill</button>
-                    <button type="button" class="btn btn-warning" id="skill-cancel-btn"
-                        style="display:none;">Cancel</button>
+                    <div class="form-grid" style="grid-template-columns: 1fr auto; align-items: end;">
+                        <div>
+                            <label>Skill Name</label>
+                            <input type="text" id="skill-name" placeholder="E.g. React.js, Python, UI/UX" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="submit" class="btn btn-primary" id="skill-submit-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                            <button type="button" class="btn btn-warning" id="skill-cancel-btn" style="display:none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
-            <div class="item-list" id="admin-skills-list"></div>
+
+            <div class="item-list" id="admin-skills-list">
+                <!-- Skills populated by JS -->
+            </div>
         </section>
 
         <!-- PROJECTS SECTION -->
         <section id="projects" class="content-section">
-            <div class="header">
-                <h1>Manage Projects</h1>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                <button onclick="showSection('dashboard')" class="btn"
+                    style="background: rgba(255,255,255,0.1); color: var(--text-main); padding: 10px 15px; border-radius: 50%;">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="header-title" style="margin-bottom: 0;">Manage <span>Projects</span></h1>
             </div>
-            <div class="card">
+
+            <div class="glass-card">
                 <form id="project-form" class="form-grid">
                     <input type="hidden" id="project-id">
 
-                    <div class="form-group">
+                    <div>
                         <label>Project Name</label>
                         <input type="text" id="project-name" required>
                     </div>
 
-                    <div class="form-group">
+                    <div>
                         <label>Description</label>
                         <textarea id="project-desc" rows="3" required></textarea>
                     </div>
 
-                    <div class="form-group">
+                    <div>
                         <label>Technologies (comma separated)</label>
                         <input type="text" id="project-tech" placeholder="React, Node, MongoDB">
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div class="form-group">
+                    <div class="form-row">
+                        <div>
                             <label>Github URL</label>
                             <input type="url" id="project-github">
                         </div>
-                        <div class="form-group">
+                        <div>
                             <label>Demo URL</label>
                             <input type="url" id="project-demo">
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
-                        <button type="submit" class="btn btn-primary" id="project-submit-btn">Add Project</button>
-                        <button type="button" class="btn btn-warning" id="project-cancel-btn"
-                            style="display:none;">Cancel Edit</button>
+                    <div style="display: flex; gap: 15px; margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary" id="project-submit-btn">
+                            <i class="fas fa-plus"></i> Add Project
+                        </button>
+                        <button type="button" class="btn btn-warning" id="project-cancel-btn" style="display:none;">
+                            Cancel
+                        </button>
                     </div>
                 </form>
             </div>
-            <div class="item-list" id="admin-projects-list"></div>
+
+            <div class="item-list" id="admin-projects-list">
+                <!-- Projects populated by JS -->
+            </div>
         </section>
 
         <!-- MESSAGES SECTION -->
         <section id="messages" class="content-section">
-            <div class="header">
-                <h1>Inbox</h1>
-                <button class="btn btn-primary" onclick="loadMessages()"><i class="fas fa-sync"></i> Refresh</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button onclick="showSection('dashboard')" class="btn"
+                        style="background: rgba(255,255,255,0.1); color: var(--text-main); padding: 10px 15px; border-radius: 50%;">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="header-title" style="margin-bottom: 0;">Inbox <span>Messages</span></h1>
+                </div>
+                <button class="btn btn-primary" onclick="loadMessages()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
             </div>
-            <div id="admin-messages-list"></div>
+
+            <div id="admin-messages-list">
+                <!-- Messages populated by JS -->
+            </div>
         </section>
 
     </main>
 
     <script src="admin.js"></script>
     <script>
-        // Simple internal tab switching logic
+        // Navbar toggle for mobile
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Section switching
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+
             // Remove active class from nav items
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.admin-nav-item').forEach(item => item.classList.remove('active'));
 
             // Show target section
             document.getElementById(sectionId).classList.add('active');
 
-            // Highlight nav item (this is a bit hacky, normally done via identifying the clicked element)
-            // But since we have onclick inline, we can't easily reference 'this' nicely without passing it.
-            // Let's just find the nav item that calls this function with this ID.
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                if (item.getAttribute('onclick').includes(sectionId)) {
-                    item.classList.add('active');
+            // Find nav item that corresponds to this section and make it active
+            const navLinks = document.querySelectorAll('.admin-nav-item');
+            navLinks.forEach(link => {
+                const onclickAttr = link.getAttribute('onclick');
+                if (onclickAttr && onclickAttr.includes(sectionId)) {
+                    link.classList.add('active');
                 }
             });
+
+            // Close mobile menu if open
+            document.getElementById('nav-links').classList.remove('active');
         }
     </script>
 </body>
