@@ -359,9 +359,7 @@
             // Show target section
             document.getElementById(sectionId).classList.add('active');
 
-            // Highlight nav item (this is a bit hacky, normally done via identifying the clicked element)
-            // But since we have onclick inline, we can't easily reference 'this' nicely without passing it.
-            // Let's just find the nav item that calls this function with this ID.
+s
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 if (item.getAttribute('onclick').includes(sectionId)) {
