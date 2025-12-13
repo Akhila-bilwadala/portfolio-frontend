@@ -79,7 +79,7 @@ async function loadMessages() {
                     <button class="btn btn-danger" onclick="deleteMessage('${msg._id}')">
                         <i class="fas fa-trash"></i> Delete
                     </button>
-                    ${msg.email.endsWith('@gmail.com') ? `
+                    ${(msg.email && msg.email.endsWith('@gmail.com')) ? `
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}" target="_blank" class="btn btn-primary" style="text-decoration:none;">
                         <i class="fas fa-reply"></i> Reply
                     </a>` : ''}
