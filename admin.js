@@ -106,11 +106,14 @@ window.deleteMessage = async (id) => {
 
 
 // --- SKILLS ---
+let currentSkills = []; // Store current skills for duplicate checking
+
 async function loadSkills() {
     skillsList.innerHTML = '<p>Loading...</p>';
     try {
         const res = await fetch(`${API_URL}/skills`);
         const skills = await res.json();
+        currentSkills = skills; // Store for duplicate checking
 
         if (skills.length === 0) {
             skillsList.innerHTML = '<p style="color:#888;">No skills added yet.</p>';
@@ -141,7 +144,19 @@ async function loadSkills() {
 skillForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = skillIdInput.value;
-    const name = skillNameInput.value;
+    const name = skillNameInput.value.trim();
+
+    // Check for duplicate skill (case-insensitive) when adding new
+    if (!id) {
+        const duplicate = currentSkills.find(
+            s => s.skill.toLowerCase() === name.toLowerCase()
+        );
+        if (duplicate) {
+            alert('This skill already exists!');
+            return;
+        }
+    }
+
     const method = id ? 'PUT' : 'POST';
     const url = id ? `${API_URL}/skills/${id}` : `${API_URL}/skills`;
 
@@ -237,11 +252,22 @@ async function loadProjects() {
 projectForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = projectIdInput.value;
+    const githubUrl = projectGithubInput.value.trim();
+
+    // Validate GitHub URL if provided
+    if (githubUrl) {
+        const githubRegex = /^(https?:\/\/)?(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?.*$/i;
+        if (!githubRegex.test(githubUrl)) {
+            alert('Please provide a valid GitHub URL (e.g., https://github.com/username/repo)');
+            return;
+        }
+    }
+
     const data = {
         name: projectNameInput.value,
         description: projectDescInput.value,
         tech: projectTechInput.value.split(',').map(t => t.trim()),
-        github: projectGithubInput.value,
+        github: githubUrl,
         demo: projectDemoInput.value
     };
 
@@ -255,12 +281,15 @@ projectForm.addEventListener('submit', async (e) => {
             body: JSON.stringify(data)
         });
 
-        if (!res.ok) throw new Error("Failed");
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.message || 'Failed to save project');
+        }
 
         resetProjectForm();
         loadProjects();
     } catch (err) {
-        alert('Error saving project');
+        alert(`Error saving project: ${err.message}`);
     }
 });
 

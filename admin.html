@@ -367,7 +367,9 @@
                     <div class="form-row">
                         <div>
                             <label>Github URL</label>
-                            <input type="url" id="project-github">
+                            <input type="url" id="project-github"
+                                pattern="(https?://)?(www\.)?github\.com/[\w-]+/[\w.-]+/?.*"
+                                placeholder="https://github.com/username/repo" title="Please enter a valid GitHub URL">
                         </div>
                         <div>
                             <label>Demo URL</label>

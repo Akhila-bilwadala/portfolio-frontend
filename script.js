@@ -142,6 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: inputs[2].value
             };
 
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+
             const btn = contactForm.querySelector('button');
             const originalText = btn.textContent;
             btn.textContent = 'Sending...';
@@ -154,11 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
 
+                const result = await res.json();
+
                 if (res.ok) {
                     showToast('Message sent successfully!', 'success');
                     contactForm.reset();
                 } else {
-                    showToast('Failed to send message.', 'error');
+                    showToast(result.message || 'Failed to send message.', 'error');
                 }
             } catch (error) {
                 console.error('Error sending message:', error);
