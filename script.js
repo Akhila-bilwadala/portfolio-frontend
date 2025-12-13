@@ -142,10 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: inputs[2].value
             };
 
-            // Validate email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Validate email format (Gmail only)
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
             if (!emailRegex.test(data.email)) {
-                showToast('Please enter a valid email address', 'error');
+                showToast('Please enter a valid Gmail address (@gmail.com)', 'error');
                 return;
             }
 

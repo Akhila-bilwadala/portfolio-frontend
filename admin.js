@@ -72,16 +72,17 @@ async function loadMessages() {
                     </div>
                     <small style="color:var(--text-muted);">${new Date(msg.createdAt).toLocaleString()}</small>
                 </div>
-                <div style="color: var(--text-main); margin-bottom: 20px; line-height: 1.6;">
+                <div style="color: var(--text-main); margin-bottom: 20px; line-height: 1.6; word-break: break-word;">
                     ${msg.message}
                 </div>
                 <div style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
                     <button class="btn btn-danger" onclick="deleteMessage('${msg._id}')">
                         <i class="fas fa-trash"></i> Delete
                     </button>
+                    ${msg.email.endsWith('@gmail.com') ? `
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${msg.email}" target="_blank" class="btn btn-primary" style="text-decoration:none;">
                         <i class="fas fa-reply"></i> Reply
-                    </a>
+                    </a>` : ''}
                 </div>
             </div>
         `).join('');
