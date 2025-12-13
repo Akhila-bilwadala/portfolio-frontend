@@ -1,4 +1,6 @@
-const API_URL = 'https://portfolio-backend-z2kz.onrender.com/api';
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000/api'
+    : 'https://portfolio-backend-z2kz.onrender.com/api';
 
 console.log('Admin Script Loaded. API URL:', API_URL);
 
@@ -55,7 +57,9 @@ async function loadMessages() {
     if (!messagesList) return;
     messagesList.innerHTML = '<p>Loading...</p>';
     try {
-        const res = await fetch(`${API_URL}/messages`);
+        const res = await fetch(`${API_URL}/messages`, {
+            headers: getAuthHeaders()
+        });
         const messages = await res.json();
 
         if (messages.length === 0) {
